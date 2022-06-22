@@ -1,0 +1,53 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+
+        <form [formGroup]="reactiveForm_add_cotisation" (ngSubmit)="onSubmit_add_cotisation()"
+            #form_add_cotisation="ngForm">
+
+            <!-- id_membre field avec un control de validite -->
+            <div class="form-group">
+                <label>id_membre</label>
+                <input class="form-control" type="text" formControlName="id_membre" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.id_membre.errors }" />
+                <div *ngIf="submitted && f.id_membre.errors" class="invalid-feedback">
+                    <div *ngIf="f.id_membre.errors.required"> id_membre est obligatoire </div>
+                </div>
+            </div>
+            <!-- montant field avec un control de validite -->
+            <div class="form-group">
+                <label>montant</label>
+                <input class="form-control" type="text" formControlName="montant" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.montant.errors }" />
+                <div *ngIf="submitted && f.montant.errors" class="invalid-feedback">
+                    <div *ngIf="f.montant.errors.required"> montant est obligatoire </div>
+                </div>
+            </div>
+            <!-- mois field avec un control de validite -->
+            <div class="form-group">
+                <label>mois</label>
+                <input class="form-control" type="text" formControlName="mois" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.mois.errors }" />
+                <div *ngIf="submitted && f.mois.errors" class="invalid-feedback">
+                    <div *ngIf="f.mois.errors.required"> mois est obligatoire </div>
+                </div>
+            </div>
+            <!-- annee field avec un control de validite -->
+            <div class="form-group">
+                <label>annee</label>
+                <input class="form-control" type="text" formControlName="annee" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.annee.errors }" />
+                <div *ngIf="submitted && f.annee.errors" class="invalid-feedback">
+                    <div *ngIf="f.annee.errors.required"> annee est obligatoire </div>
+                </div>
+            </div>
+        </form>
+        <!-- vous pouvez valider votre formulaire n'importe ou -->
+        <div class="text-center m-2">
+            
+        <button type="button" class="btn btn-primary m-1" [disabled]="loading_add_cotisation"
+            (click)="form_add_cotisation.ngSubmit.emit()">{{loading_add_cotisation?"En cours ...":"Valider"}}</button>
+        <button class="btn btn-secondary m-1" type="reset" (click)="onReset_add_cotisation()">Vider</button>
+
+        </div>
+    </div>
+</div>
