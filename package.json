@@ -23,6 +23,8 @@
     "alert": "^5.0.12",
     "chart.js": "^3.8.0",
     "jquery": "^3.6.0",
+    "moment": "^2.29.3",
+    "ng2-google-charts": "^7.0.0",
     "ng2-search-filter": "^0.5.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",

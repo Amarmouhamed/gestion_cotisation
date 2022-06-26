@@ -1,10 +1,20 @@
 
-<!-- Recent Sales Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="bg-light text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">{{"Les cotisations ("+api.les_cotisations.length+")"}} </h6>
-            <a  [routerLink]="['/accueil/cotisation/add']" routerLinkActive="router-link-active" ><i class="fa-solid fa-circle-plus me-2"></i>ajouter une cotisation</a>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <h1 class="mb-0 ">{{"Les cotisations ("+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+" membres)"}}
+            </h1>
+        </div>
+        <app-inline-periode [selected_id_periode]="id_periode" (periode_change)="periode_change($event)">
+        </app-inline-periode>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <h2 class="mb-0 ">{{"Encaissées ("+api.les_cotisations.encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}}
+                
+            </h2>
+            <form class="d-none d-md-flex ms-4">
+                <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
+                    [(ngModel)]="filter.encaissees">
+            </form>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -20,16 +30,66 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let une_cotisation of api.les_cotisations| filter:api.terme_recherche">
+                    <tr *ngFor="let une_cotisation of api.les_cotisations.encaissees| filter:filter.encaissees">
                         <td><input class="form-check-input" type="checkbox"></td>
                         <td>{{une_cotisation.matricule}}</td>
                         <td>{{une_cotisation.prenom}}</td>
                         <td>{{une_cotisation.nom}}</td>
                         <td>{{une_cotisation.montant}}</td>
-                        <td>{{une_cotisation.mois+" / "+une_cotisation.annee}}</td>
+                        <td>{{une_cotisation.created_at}}</td>
                         <td>
                             <a class="btn btn-sm btn-primary m-1" href="">Detail</a>
-                            <a class="btn btn-sm btn-warning m-1" [routerLink]="['/accueil/cotisation/edit',une_cotisation.id_cotisation]">modifier</a>
+                            <a class="btn btn-sm btn-warning text-white m-1"
+                                [routerLink]="['/accueil/cotisation/edit',une_cotisation.id_cotisation]">modifier</a>
+                            <a class="btn btn-sm btn-danger text-white m-1" href="">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="d-flex align-items-center justify-content-between mt-4 mb-2">
+            <h2 class="mb-0 text-warning">{{"Non encaissées  ("+api.les_cotisations.non_encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}} </h2>
+            
+            <form class="d-none d-md-flex ms-4">
+                <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
+                    [(ngModel)]="filter.non_encaissees">
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                        <th scope="col">Matricule</th>
+                        <th scope="col">Prenom</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr [ngClass]="{'line_changed': une_cotisation.updated}" *ngFor="let une_cotisation of api.les_cotisations.non_encaissees | filter:filter.non_encaissees">
+                        <td><input class="form-check-input" type="checkbox"></td>
+                        <td>{{une_cotisation.matricule}}</td>
+                        <td>{{une_cotisation.prenom}}</td>
+                        <td>{{une_cotisation.nom}}</td>
+                        <td>
+                            <select [(ngModel)]="une_cotisation.montant" class="form-select form-select-sm" (change)="changement_select_montant(une_cotisation)">
+                                <option value="undefined">Choisir le montant</option>
+                                <option value="5000">5000</option>
+                                <option value="2000">2000</option>
+                                <option value="1000">1000</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input [(ngModel)]="une_cotisation.date_cotisation" type="date" class="form-control" placeholder="date" (change)="changement_date(une_cotisation)">
+                        </td>
+                        <td>
+                            <button (click)="enregistrer_cotisation(une_cotisation)" [ngClass]="{'btn-primary': une_cotisation.updated,'btn-secondary':!une_cotisation.updated}" class="btn btn-sm  m-1"  [disabled]="!une_cotisation.updated">
+                                {{une_cotisation.loading?"en cours ...":"Enregistrer cotisation"}}
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -37,4 +97,3 @@
         </div>
     </div>
 </div>
-<!-- Recent Sales End -->

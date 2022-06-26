@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-            <div class="bg-white rounded p-4 p-sm-5 my-4 mx-3">
+            <form class="bg-white rounded p-4 p-sm-5 my-4 mx-3" [formGroup]="reactiveForm_add_membre"
+                (ngSubmit)="onSubmit_add_membre()" #form_add_membre="ngForm">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <a href="index.html" class="">
                         <h3 class="text-primary">Cotisation</h3>
@@ -9,15 +10,23 @@
                     <h3>Connexion</h3>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInput">login</label>
+                    <input class="form-control" type="text" formControlName="numero" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.numero.errors }" />
+                    <label>Numéro de téléphone</label>
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                        <div *ngIf="f.numero.errors.required"> numero est obligatoire </div>
+                    </div>
                 </div>
                 <div class="form-floating mb-4">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                    <input class="form-control" type="text" formControlName="password" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <label>Mot de passe</label>
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required"> password est obligatoire </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary py-3 w-100 mb-4" (click)="connexion()">Connexion</button>
-            </div>
+                <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Connexion</button>
+            </form>
         </div>
     </div>
 </div>

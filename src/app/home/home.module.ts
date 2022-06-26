@@ -6,7 +6,6 @@ import { HomeComponent } from './home/home.component';
 import { AddMembreComponent } from './membre/add-membre/add-membre.component';
 import { ListMembreComponent } from './membre/list-membre/list-membre.component';
 import { AddCotisationComponent } from './cotisation/add-cotisation/add-cotisation.component';
-import { ListCotisationComponent } from './cotisation/list-cotisation/list-cotisation.component';
 import { HistoriqueCotisationComponent } from './cotisation/historique-cotisation/historique-cotisation.component';
 import { SidebarComponent } from './home/sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EditMembreComponent } from './membre/edit-membre/edit-membre.component';
 import { EditCotisationComponent } from './cotisation/edit-cotisation/edit-cotisation.component';
+import { InlinePeriodeComponent } from './cotisation/inline-periode/inline-periode.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,6 @@ import { EditCotisationComponent } from './cotisation/edit-cotisation/edit-cotis
     AddMembreComponent,
     ListMembreComponent,
     AddCotisationComponent,
-    ListCotisationComponent,
     HistoriqueCotisationComponent,
     SidebarComponent,
     DashboardComponent,
@@ -35,7 +34,8 @@ import { EditCotisationComponent } from './cotisation/edit-cotisation/edit-cotis
     ParametreComponent,
     EditMembreComponent,
     AddCotisationComponent,
-    EditCotisationComponent
+    EditCotisationComponent,
+    InlinePeriodeComponent
   ],
   imports: [
     CommonModule,

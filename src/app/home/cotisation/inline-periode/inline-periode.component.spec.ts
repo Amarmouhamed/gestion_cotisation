@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListCotisationComponent } from './list-cotisation.component';
+import { InlinePeriodeComponent } from './inline-periode.component';
 
-describe('ListCotisationComponent', () => {
-  let component: ListCotisationComponent;
-  let fixture: ComponentFixture<ListCotisationComponent>;
+describe('InlinePeriodeComponent', () => {
+  let component: InlinePeriodeComponent;
+  let fixture: ComponentFixture<InlinePeriodeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListCotisationComponent ]
+      declarations: [ InlinePeriodeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListCotisationComponent);
+    fixture = TestBed.createComponent(InlinePeriodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

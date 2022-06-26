@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddCotisationComponent } from './cotisation/add-cotisation/add-cotisation.component';
 import { EditCotisationComponent } from './cotisation/edit-cotisation/edit-cotisation.component';
 import { HistoriqueCotisationComponent } from './cotisation/historique-cotisation/historique-cotisation.component';
-import { ListCotisationComponent } from './cotisation/list-cotisation/list-cotisation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AddMembreComponent } from './membre/add-membre/add-membre.component';
@@ -21,6 +20,7 @@ const routes: Routes = [
       { path: 'cotisation', component: HistoriqueCotisationComponent },
       { path: 'cotisation/add', component: AddCotisationComponent },
       { path: 'cotisation/edit/:id_cotisation', component: EditCotisationComponent },
+      { path: 'cotisation/:id_periode', component: HistoriqueCotisationComponent },
       { path: 'membre', component: ListMembreComponent },
       { path: 'membre/add', component: AddMembreComponent },
       { path: 'membre/edit/:id_membre', component: EditMembreComponent },
