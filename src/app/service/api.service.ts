@@ -8,7 +8,10 @@ export class ApiService {
   les_membres:any=[]
   les_cotisations:any=[]
   les_periodes:any=[]
-  taf_url="http://localhost/gestion_cotisation_back/taf/"
+  selected_periode:any={}
+  dashboard_data:any={}
+  // taf_url="http://localhost/gestion_cotisation_back/taf/"
+  taf_url="https://amar.host.com.sn/taf/"
   terme_recherche=""
   key_prefix_localtrorage = "abcde_gestion_cgek_cotisation"
   user_connected:any={}

@@ -42,6 +42,7 @@ export class AddMembreComponent implements OnInit {
       return;
     }
     var membre = this.reactiveForm_add_membre.value
+    membre.id_tontine=this.api.user_connected.id_tontine
     this.add_membre(membre)
   }
   // vider le formulaire

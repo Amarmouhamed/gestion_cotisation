@@ -6,6 +6,7 @@ import { HistoriqueCotisationComponent } from './cotisation/historique-cotisatio
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AddMembreComponent } from './membre/add-membre/add-membre.component';
+import { DetailsMembreComponent } from './membre/details-membre/details-membre.component';
 import { EditMembreComponent } from './membre/edit-membre/edit-membre.component';
 import { ListMembreComponent } from './membre/list-membre/list-membre.component';
 import { ParametreComponent } from './parametre/parametre.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'membre', component: ListMembreComponent },
       { path: 'membre/add', component: AddMembreComponent },
       { path: 'membre/edit/:id_membre', component: EditMembreComponent },
+      { path: 'membre/:id_membre', component: DetailsMembreComponent },
       { path: 'profil', component: ProfilComponent },
       { path: 'parametre', component: ParametreComponent },
     ]

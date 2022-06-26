@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { ApiService } from 'src/app/service/api.service';
 
@@ -9,7 +10,7 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public api:ApiService) { }
+  constructor(public api:ApiService, private route:Router) { }
 
   ngOnInit(): void {
   }
@@ -18,5 +19,10 @@ export class NavbarComponent implements OnInit {
     // Sidebar Toggler
       $('.sidebar, .content').toggleClass("open");
 
+  }
+  deconnexion(){
+    this.api.delete_from_local_storage("user_connected")
+    this.api.user_connected=null
+    this.route.navigate(['/'])
   }
 }

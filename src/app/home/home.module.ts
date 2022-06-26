@@ -18,6 +18,12 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EditMembreComponent } from './membre/edit-membre/edit-membre.component';
 import { EditCotisationComponent } from './cotisation/edit-cotisation/edit-cotisation.component';
 import { InlinePeriodeComponent } from './cotisation/inline-periode/inline-periode.component';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { CotisationMoisComponent } from './dashboard/cotisation-mois/cotisation-mois.component';
+import { CotisationGlobalComponent } from './dashboard/cotisation-global/cotisation-global.component';
+import { GraphEvolutionMontantGlobalComponent } from './dashboard/graph-evolution-montant-global/graph-evolution-montant-global.component';
+import { DetailsMembreComponent } from './membre/details-membre/details-membre.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -35,7 +41,11 @@ import { InlinePeriodeComponent } from './cotisation/inline-periode/inline-perio
     EditMembreComponent,
     AddCotisationComponent,
     EditCotisationComponent,
-    InlinePeriodeComponent
+    InlinePeriodeComponent,
+    CotisationMoisComponent,
+    CotisationGlobalComponent,
+    GraphEvolutionMontantGlobalComponent,
+    DetailsMembreComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +53,8 @@ import { InlinePeriodeComponent } from './cotisation/inline-periode/inline-perio
     FormsModule,
     ReactiveFormsModule,
     Ng2SearchPipeModule,
-
+    Ng2GoogleChartsModule,
+    NgxPrintModule
   ]
 })
 export class HomeModule { }

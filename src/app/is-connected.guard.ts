@@ -12,7 +12,7 @@ export class IsConnectedGuard implements CanActivate {
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     this.api.user_connected = this.api.get_from_local_storage("user_connected")
-    if (this.api.user_connected=null) {
+    if (this.api.user_connected!=null) {
       return true
     } else {
       return false;

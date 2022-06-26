@@ -8,15 +8,14 @@ import { ApiService } from 'src/app/service/api.service';
   styleUrls: ['./list-membre.component.css']
 })
 export class ListMembreComponent implements OnInit {
-
+  filter:any={membre:""}
   constructor(public api:ApiService, private http:HttpClient) { }
 
   ngOnInit(): void {
-    this.get_membre()
+    this.get_membre(this.api.user_connected.id_tontine)
   }
-  get_membre(){
-    let api_url=this.api.taf_url+"membre/get";   //recevoir tout
-
+  get_membre(id_tontine:number){
+    let api_url=this.api.taf_url+"membre/with_details?id_tontine="+id_tontine;   //recevoir tout
     this.http.get(api_url).subscribe((reponse:any)=>{
         //when success
         if(reponse.status){

@@ -1,88 +1,94 @@
-<div class="container-fluid pt-4 px-4">
-    <div class="bg-light rounded p-4">
-
-        <form [formGroup]="reactiveForm_add_membre" (ngSubmit)="onSubmit_add_membre()" #form_add_membre="ngForm"
-            class="row">
-
-            <!-- prenom field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Prénom</label>
-                <input class="form-control" type="text" formControlName="prenom" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.prenom.errors }" />
-                <div *ngIf="submitted && f.prenom.errors" class="invalid-feedback">
-                    <div *ngIf="f.prenom.errors.required"> prenom est obligatoire </div>
-                </div>
+<div class="container-fluid">
+    <div class="row align-items-center justify-content-center mt-4">
+        <div class="col-12 col-sm-8 bg-light p-4">
+    
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h1 class="mb-0">
+                    Ajouter un nouveau membre
+                </h1>
             </div>
-            <!-- nom field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Nom</label>
-                <input class="form-control" type="text" formControlName="nom" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
-                <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
-                    <div *ngIf="f.nom.errors.required"> nom est obligatoire </div>
+            <form [formGroup]="reactiveForm_add_membre" (ngSubmit)="onSubmit_add_membre()" #form_add_membre="ngForm"
+                class="row">
+    
+                <!-- prenom field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label>Prénom</label>
+                    <input class="form-control" type="text" formControlName="prenom" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.prenom.errors }" />
+                    <div *ngIf="submitted && f.prenom.errors" class="invalid-feedback">
+                        <div *ngIf="f.prenom.errors.required"> prenom est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- adresse field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Adresse</label>
-                <input class="form-control" type="text" formControlName="adresse" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.adresse.errors }" />
-                <div *ngIf="submitted && f.adresse.errors" class="invalid-feedback">
-                    <div *ngIf="f.adresse.errors.required"> adresse est obligatoire </div>
+                <!-- nom field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label>Nom</label>
+                    <input class="form-control" type="text" formControlName="nom" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+                    <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+                        <div *ngIf="f.nom.errors.required"> nom est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- poste field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Poste</label>
-                <input class="form-control" type="text" formControlName="poste" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.poste.errors }" />
-                <div *ngIf="submitted && f.poste.errors" class="invalid-feedback">
-                    <div *ngIf="f.poste.errors.required"> poste est obligatoire </div>
+                <!-- adresse field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label>Adresse</label>
+                    <input class="form-control" type="text" formControlName="adresse" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.adresse.errors }" />
+                    <div *ngIf="submitted && f.adresse.errors" class="invalid-feedback">
+                        <div *ngIf="f.adresse.errors.required"> adresse est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- numero field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Numero</label>
-                <input class="form-control" type="text" formControlName="numero" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.numero.errors }" />
-                <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
-                    <div *ngIf="f.numero.errors.required"> numero est obligatoire </div>
+                <!-- poste field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Poste</label>
+                    <input class="form-control" type="text" formControlName="poste" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.poste.errors }" />
+                    <div *ngIf="submitted && f.poste.errors" class="invalid-feedback">
+                        <div *ngIf="f.poste.errors.required"> poste est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- matricule field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Matricule</label>
-                <input class="form-control" type="text" formControlName="matricule" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.matricule.errors }" />
-                <div *ngIf="submitted && f.matricule.errors" class="invalid-feedback">
-                    <div *ngIf="f.matricule.errors.required"> matricule est obligatoire </div>
+                <!-- numero field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Numero</label>
+                    <input class="form-control" type="text" formControlName="numero" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.numero.errors }" />
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                        <div *ngIf="f.numero.errors.required"> numero est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- etat field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Etat</label>
-                <input class="form-control" type="text" formControlName="etat" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.etat.errors }" />
-                <div *ngIf="submitted && f.etat.errors" class="invalid-feedback">
-                    <div *ngIf="f.etat.errors.required"> etat est obligatoire </div>
+                <!-- matricule field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Matricule</label>
+                    <input class="form-control" type="text" formControlName="matricule" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.matricule.errors }" />
+                    <div *ngIf="submitted && f.matricule.errors" class="invalid-feedback">
+                        <div *ngIf="f.matricule.errors.required"> matricule est obligatoire </div>
+                    </div>
                 </div>
-            </div>
-            <!-- adhesion field avec un control de validite -->
-            <div class="form-group col-xs-12 col-sm-6">
-                <label>Adhesion</label>
-                <input class="form-control" type="text" formControlName="adhesion" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.adhesion.errors }" />
-                <div *ngIf="submitted && f.adhesion.errors" class="invalid-feedback">
-                    <div *ngIf="f.adhesion.errors.required"> adhesion est obligatoire </div>
+                <!-- etat field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Etat</label>
+                    <input class="form-control" type="text" formControlName="etat" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.etat.errors }" />
+                    <div *ngIf="submitted && f.etat.errors" class="invalid-feedback">
+                        <div *ngIf="f.etat.errors.required"> etat est obligatoire </div>
+                    </div>
                 </div>
+                <!-- adhesion field avec un control de validite -->
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Adhesion</label>
+                    <input class="form-control" type="text" formControlName="adhesion" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.adhesion.errors }" />
+                    <div *ngIf="submitted && f.adhesion.errors" class="invalid-feedback">
+                        <div *ngIf="f.adhesion.errors.required"> adhesion est obligatoire </div>
+                    </div>
+                </div>
+            </form>
+            <!-- vous pouvez valider votre formulaire n'importe ou -->
+            <div class="text-center m-2">
+                <button type="button" class="btn btn-primary m-2" (click)="form_add_membre.ngSubmit.emit()" [disabled]="loading_add_membre">{{loading_add_membre?"En cours ...":"Valider"}}</button>
+                <button class="btn btn-secondary m-2" type="reset" (click)="onReset_add_membre()">Vider</button>
             </div>
-        </form>
-        <!-- vous pouvez valider votre formulaire n'importe ou -->
-        <div class="text-center m-2">
-            <button type="button" class="btn btn-primary m-2" (click)="form_add_membre.ngSubmit.emit()" [disabled]="loading_add_membre">{{loading_add_membre?"En cours ...":"Valider"}}</button>
-            <button class="btn btn-secondary m-2" type="reset" (click)="onReset_add_membre()">Vider</button>
-
+    
         </div>
-
     </div>
 </div>

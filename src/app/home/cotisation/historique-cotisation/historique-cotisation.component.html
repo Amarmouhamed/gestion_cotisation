@@ -1,16 +1,19 @@
 
-<div class="container-fluid pt-4 px-4">
+<div class="container-fluid pt-4 px-4" id="print-section">
     <div class="bg-light text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-            <h1 class="mb-0 ">{{"Les cotisations ("+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+" membres)"}}
-            </h1>
+        <div class="show_print">
+            <h2>{{"Tontine :"+api.user_connected.tontine.nom}}</h2>
+            <p>{{"Date de début :"+api.user_connected.tontine.date_debut}}</p>
+            <p>{{"Membres :"+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)}}</p>
+            <p>{{"Mois : "+api.selected_periode.mois+"-"+api.selected_periode.annee}}</p>
+            <button styleSheetFile="assets/css/custom1.css" [useExistingCss]="true" printTitle="Gestion des cotisations" printSectionId="print-section" ngxPrint type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>Télécharger rapport</button>
         </div>
-        <app-inline-periode [selected_id_periode]="id_periode" (periode_change)="periode_change($event)">
+        <app-inline-periode class="hide_print" [selected_id_periode]="id_periode" (periode_change)="periode_change($event)">
         </app-inline-periode>
         <div class="d-flex align-items-center justify-content-between mb-2">
-            <h2 class="mb-0 ">{{"Encaissées ("+api.les_cotisations.encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}}
+            <h3 class="mb-0 ">{{"Encaissées ("+api.les_cotisations.encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}}
                 
-            </h2>
+            </h3>
             <form class="d-none d-md-flex ms-4">
                 <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
                     [(ngModel)]="filter.encaissees">
@@ -26,7 +29,7 @@
                         <th scope="col">Nom</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="hide_print">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +40,7 @@
                         <td>{{une_cotisation.nom}}</td>
                         <td>{{une_cotisation.montant}}</td>
                         <td>{{une_cotisation.created_at}}</td>
-                        <td>
+                        <td class="hide_print">
                             <a class="btn btn-sm btn-primary m-1" href="">Detail</a>
                             <a class="btn btn-sm btn-warning text-white m-1"
                                 [routerLink]="['/accueil/cotisation/edit',une_cotisation.id_cotisation]">modifier</a>
@@ -49,7 +52,7 @@
         </div>
         <hr>
         <div class="d-flex align-items-center justify-content-between mt-4 mb-2">
-            <h2 class="mb-0 text-warning">{{"Non encaissées  ("+api.les_cotisations.non_encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}} </h2>
+            <h3 class="mb-0 text-warning">{{"Non encaissées  ("+api.les_cotisations.non_encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}} </h3>
             
             <form class="d-none d-md-flex ms-4">
                 <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
@@ -64,9 +67,9 @@
                         <th scope="col">Matricule</th>
                         <th scope="col">Prenom</th>
                         <th scope="col">Nom</th>
-                        <th scope="col">Montant</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" class="hide_print">Montant</th>
+                        <th scope="col" class="hide_print">Date</th>
+                        <th scope="col"  class="hide_print">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +78,7 @@
                         <td>{{une_cotisation.matricule}}</td>
                         <td>{{une_cotisation.prenom}}</td>
                         <td>{{une_cotisation.nom}}</td>
-                        <td>
+                        <td class="hide_print">
                             <select [(ngModel)]="une_cotisation.montant" class="form-select form-select-sm" (change)="changement_select_montant(une_cotisation)">
                                 <option value="undefined">Choisir le montant</option>
                                 <option value="5000">5000</option>
@@ -83,10 +86,10 @@
                                 <option value="1000">1000</option>
                             </select>
                         </td>
-                        <td>
+                        <td class="hide_print">
                             <input [(ngModel)]="une_cotisation.date_cotisation" type="date" class="form-control" placeholder="date" (change)="changement_date(une_cotisation)">
                         </td>
-                        <td>
+                        <td class="hide_print">
                             <button (click)="enregistrer_cotisation(une_cotisation)" [ngClass]="{'btn-primary': une_cotisation.updated,'btn-secondary':!une_cotisation.updated}" class="btn btn-sm  m-1"  [disabled]="!une_cotisation.updated">
                                 {{une_cotisation.loading?"en cours ...":"Enregistrer cotisation"}}
                             </button>

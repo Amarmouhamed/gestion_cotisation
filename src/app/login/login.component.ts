@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
         this.route.navigate(["/accueil"])
       } else {
         console.log("L'opération sur la table membre a échoué. Réponse = ", reponse)
+        alert("Téléphone ou mot de pass incorrect")
       }
     },
       (error: any) => {

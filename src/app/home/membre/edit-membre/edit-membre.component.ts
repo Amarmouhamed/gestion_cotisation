@@ -55,7 +55,7 @@ export class EditMembreComponent implements OnInit {
       return;
     }
     var membre = this.reactiveForm_add_membre.value
-    membre.id=this.membre.id
+    membre.id_membre=this.membre.id_membre
     this.edit_membre(membre)
   }
   // vider le formulaire
@@ -90,7 +90,7 @@ export class EditMembreComponent implements OnInit {
   }
 
   get_one_membre(id: number) {
-    let api_url = this.api.taf_url + "membre/get?id=" + id;   //recevoir tout
+    let api_url = this.api.taf_url + "membre/get?id_membre=" + id;   //recevoir tout
 
     this.http.get(api_url).subscribe((reponse: any) => {
       //when success
