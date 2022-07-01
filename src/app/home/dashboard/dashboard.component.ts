@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/service/api.service';
 import { GraphEvolutionMontantGlobalComponent } from './graph-evolution-montant-global/graph-evolution-montant-global.component';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { DetailsMembreComponent } from '../membre/details-membre/details-membre.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +13,8 @@ import { GraphEvolutionMontantGlobalComponent } from './graph-evolution-montant-
 export class DashboardComponent implements OnInit {
   @ViewChild(GraphEvolutionMontantGlobalComponent) gemg!:GraphEvolutionMontantGlobalComponent
   
-  constructor(public api: ApiService, private http: HttpClient) { }
+  bsModalRef?: BsModalRef;
+  constructor(public api: ApiService, private http: HttpClient, private modalService: BsModalService) { }
 
   ngOnInit(): void {
     this.get_dashboard(this.api.user_connected.id_tontine)
@@ -43,4 +46,13 @@ export class DashboardComponent implements OnInit {
       })
   }
 
+  openModalWithComponent(membre:any) {
+    const initialState: ModalOptions = {
+      initialState: {
+        membre:membre
+      }
+    };
+    this.bsModalRef = this.modalService.show(DetailsMembreComponent, initialState);
+    // this.bsModalRef.content.closeBtnName = 'Close';
+  }
 }

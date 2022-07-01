@@ -1,0 +1,31 @@
+<div class="d-flex align-items-center justify-content-between mb-2">
+    <h3 class="mb-0 ">{{"Paramètres des Amandes "}}
+        
+    </h3>
+    <form class="d-none d-md-flex ms-4">
+        <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
+            [(ngModel)]="filter.les_type_amandes">
+    </form>
+</div>
+<div class="table-responsive">
+    <table class="table text-start align-middle table-bordered table-hover mb-0">
+        <thead>
+            <tr class="text-dark">
+                <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                <th scope="col">Titre</th>
+                <th scope="col">Description</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Delais</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="clique"  *ngFor="let une_amande of api.les_type_amandes| filter:filter.les_type_amandes">
+                <td><input [checked]="une_amande.checked" class="form-check-input" type="checkbox"></td>
+                <td>{{une_amande.titre}}</td>
+                <td class="no_wrapp">{{une_amande.description}}</td>
+                <td>{{une_amande.montant}}</td>
+                <td>{{une_amande.delais}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

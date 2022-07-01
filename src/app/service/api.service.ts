@@ -10,6 +10,9 @@ export class ApiService {
   les_periodes:any=[]
   selected_periode:any={}
   dashboard_data:any={}
+  selected_membres:any=[]
+  les_amandes:any=[]
+  les_type_amandes:any=[]
   // taf_url="http://localhost/gestion_cotisation_back/taf/"
   taf_url="https://amar.host.com.sn/taf/"
   terme_recherche=""

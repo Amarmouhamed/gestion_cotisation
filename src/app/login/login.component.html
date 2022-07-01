@@ -25,7 +25,7 @@
                         <div *ngIf="f.password.errors.required"> password est obligatoire </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Connexion</button>
+                <button type="submit" class="btn btn-primary py-3 w-100 mb-4" [disabled]="loading_login_membre">{{loading_login_membre?"En cours ...":"Connexion"}}</button>
             </form>
         </div>
     </div>

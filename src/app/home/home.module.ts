@@ -24,6 +24,13 @@ import { CotisationGlobalComponent } from './dashboard/cotisation-global/cotisat
 import { GraphEvolutionMontantGlobalComponent } from './dashboard/graph-evolution-montant-global/graph-evolution-montant-global.component';
 import { DetailsMembreComponent } from './membre/details-membre/details-membre.component';
 import { NgxPrintModule } from 'ngx-print';
+import { InlineSelectedMembreComponent } from './cotisation/inline-selected-membre/inline-selected-membre.component';
+import { ListAmandeComponent } from './amande/list-amande/list-amande.component';
+import { ListRealisationComponent } from './realisation/list-realisation/list-realisation.component';
+import { ParametreAmandeComponent } from './parametre/parametre-amande/parametre-amande.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 @NgModule({
   declarations: [
@@ -45,7 +52,11 @@ import { NgxPrintModule } from 'ngx-print';
     CotisationMoisComponent,
     CotisationGlobalComponent,
     GraphEvolutionMontantGlobalComponent,
-    DetailsMembreComponent
+    DetailsMembreComponent,
+    InlineSelectedMembreComponent,
+    ListAmandeComponent,
+    ListRealisationComponent,
+    ParametreAmandeComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +65,8 @@ import { NgxPrintModule } from 'ngx-print';
     ReactiveFormsModule,
     Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
-    NgxPrintModule
+    NgxPrintModule,
+    ProgressbarModule
   ]
 })
 export class HomeModule { }

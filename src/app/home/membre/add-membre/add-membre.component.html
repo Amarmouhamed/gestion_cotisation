@@ -67,19 +67,15 @@
                 <!-- etat field avec un control de validite -->
                 <div class="form-group col-xs-12 col-sm-6">
                     <label>Etat</label>
-                    <input class="form-control" type="text" formControlName="etat" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.etat.errors }" />
-                    <div *ngIf="submitted && f.etat.errors" class="invalid-feedback">
-                        <div *ngIf="f.etat.errors.required"> etat est obligatoire </div>
-                    </div>
-                </div>
-                <!-- adhesion field avec un control de validite -->
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label>Adhesion</label>
-                    <input class="form-control" type="text" formControlName="adhesion" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.adhesion.errors }" />
-                    <div *ngIf="submitted && f.adhesion.errors" class="invalid-feedback">
-                        <div *ngIf="f.adhesion.errors.required"> adhesion est obligatoire </div>
+                    <select formControlName="id_etat" [ngClass]="{ 'is-invalid': submitted && f.id_etat.errors }" class="form-select form-select-sm" >
+                        <option value="1">actif</option>
+                        <option value="2">inatif</option>
+                        <option value="3">suspendu</option>
+                    </select>
+                    <!-- <input class="form-control" type="text" formControlName="etat" class="form-control"
+                         /> -->
+                    <div *ngIf="submitted && f.id_etat.errors" class="invalid-feedback">
+                        <div *ngIf="f.id_etat.errors.required"> etat est obligatoire </div>
                     </div>
                 </div>
             </form>

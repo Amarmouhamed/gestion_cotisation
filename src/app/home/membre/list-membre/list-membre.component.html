@@ -20,24 +20,24 @@
                         <th scope="col">Prénom</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Montant total</th>
+                        <th scope="col">Amande</th>
                         <th scope="col">Poste</th>
                         <th scope="col">Numéro</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let un_membre of api.les_membres  |filter:filter.membre">
+                    <tr [ngClass]="{'amande': un_membre.montant_amande_total}" *ngFor="let un_membre of api.les_membres  |filter:filter.membre">
                         <td><input class="form-check-input" type="checkbox"></td>
                         <td>{{un_membre.matricule}}</td>
                         <td>{{un_membre.prenom}}</td>
                         <td>{{un_membre.nom}}</td>
                         <td>{{un_membre.montant_total}}</td>
+                        <td>{{un_membre.montant_amande_total}}</td>
                         <td>{{un_membre.poste}}</td>
                         <td>{{un_membre.numero}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="">Detail</a>
-                            <a class="btn btn-sm btn-warning m-1"
-                                [routerLink]="['/accueil/membre/edit',un_membre.id_membre]">mofifier</a>
+                            <button (click)="openModalWithComponent(un_membre)" class="btn btn-primary">détails</button> 
                         </td>
                     </tr>
                 </tbody>

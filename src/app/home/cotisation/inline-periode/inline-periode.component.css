@@ -46,3 +46,11 @@ scrollbar-width: none;  /* Firefox */
 .active i , .active h6{
     color: white!important;
 }
+.cloture{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+.une_periode{
+    position: relative;
+}

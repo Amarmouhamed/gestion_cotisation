@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         console.log("Opération effectuée avec succés sur la table membre. Réponse = ", reponse)
         this.api.user_connected=reponse.data
         this.api.save_on_local_storage("user_connected",this.api.user_connected)
-        this.route.navigate(["/accueil"])
+        this.route.navigate(["/accueil/cotisation"])
       } else {
         console.log("L'opération sur la table membre a échoué. Réponse = ", reponse)
         alert("Téléphone ou mot de pass incorrect")

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/service/api.service';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { DetailsMembreComponent } from '../details-membre/details-membre.component';
 
 @Component({
   selector: 'app-list-membre',
@@ -9,7 +11,8 @@ import { ApiService } from 'src/app/service/api.service';
 })
 export class ListMembreComponent implements OnInit {
   filter:any={membre:""}
-  constructor(public api:ApiService, private http:HttpClient) { }
+  bsModalRef?: BsModalRef;
+  constructor(public api:ApiService, private http:HttpClient,private modalService: BsModalService) { }
 
   ngOnInit(): void {
     this.get_membre(this.api.user_connected.id_tontine)
@@ -29,5 +32,14 @@ export class ListMembreComponent implements OnInit {
         //when error
         console.log("Erreur inconnue! ",error);
     })
+  }
+  openModalWithComponent(membre:any) {
+    const initialState: ModalOptions = {
+      initialState: {
+        membre:membre
+      }
+    };
+    this.bsModalRef = this.modalService.show(DetailsMembreComponent, initialState);
+    // this.bsModalRef.content.closeBtnName = 'Close';
   }
 }

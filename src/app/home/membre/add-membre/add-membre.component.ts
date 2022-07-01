@@ -26,8 +26,7 @@ export class AddMembreComponent implements OnInit {
       poste: [""],
       numero: ["", Validators.required],
       matricule: ["", Validators.required],
-      etat: [""],
-      adhesion: [""]
+      id_etat: ["", Validators.required],
     });
   }
 

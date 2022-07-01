@@ -90,9 +90,7 @@
                         <td>{{"100%"}}</td>
                         <td>{{un_membre.numero}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" [routerLink]="['/accueil/membre',un_membre.id_membre]">Detail</a>
-                            <a class="btn btn-sm btn-warning m-1"
-                                [routerLink]="['/accueil/membre/edit',un_membre.id_membre]">mofifier</a>
+                            <button (click)="openModalWithComponent(un_membre)" class="btn btn-primary">détails</button> 
                         </td>
                     </tr>
                 </tbody>

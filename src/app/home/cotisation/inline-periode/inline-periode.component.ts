@@ -18,7 +18,7 @@ export class InlinePeriodeComponent implements OnInit {
     this.get_periode(this.api.user_connected.id_tontine)
   }
   get_periode(id_tontine: number) {
-    let api_url = this.api.taf_url + "periode/get?id_tontine=" + id_tontine;   //recevoir tout
+    let api_url = this.api.taf_url + "periode/get_order?id_tontine=" + id_tontine;   //recevoir tout
     //let api_url="http://localhost/gestion_cotisation_back/taf/periode//get?id_periode=1"; // recevoir le(a) periode d'identifiant 1
 
     this.http.get(api_url).subscribe((reponse: any) => {
