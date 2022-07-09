@@ -11,6 +11,7 @@ import { DetailsMembreComponent } from './membre/details-membre/details-membre.c
 import { EditMembreComponent } from './membre/edit-membre/edit-membre.component';
 import { ListMembreComponent } from './membre/list-membre/list-membre.component';
 import { ParametreComponent } from './parametre/parametre.component';
+import { AddPeriodeComponent } from './periode/add-periode/add-periode.component';
 import { ProfilComponent } from './profil/profil.component';
 import { ListRealisationComponent } from './realisation/list-realisation/list-realisation.component';
 
@@ -29,9 +30,11 @@ const routes: Routes = [
       { path: 'membre/edit/:id_membre', component: EditMembreComponent },
       { path: 'membre/:id_membre', component: DetailsMembreComponent },
       { path: 'amande', component: ListAmandeComponent },
+      { path: 'amande/:id_periode', component: ListAmandeComponent },
       { path: 'realisation', component: ListRealisationComponent },
       { path: 'profil', component: ProfilComponent },
       { path: 'parametre', component: ParametreComponent },
+      { path: 'periode/add', component: AddPeriodeComponent },
     ]
   }
 ];

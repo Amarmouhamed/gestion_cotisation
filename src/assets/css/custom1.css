@@ -1,3 +1,6 @@
 .hide_print{
     display: none!important;
 }
+.show_print{
+    display: table-cell!important;
+}

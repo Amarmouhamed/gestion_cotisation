@@ -3,3 +3,8 @@
     display: inline-block;
     min-width: 150px;
 }
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: scroll;
+}

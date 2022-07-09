@@ -1,0 +1,15 @@
+<td class="show_print">{{index+1}}</td>
+<td>{{une_cotisation.matricule}}</td>
+<td>
+    <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-link rounded-pill">
+        {{une_cotisation.prenom}}
+    </button>
+</td>
+<td>
+    <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-link rounded-pill">
+        {{une_cotisation.nom}}
+    </button>
+</td>
+<td>{{une_cotisation.montant}}</td>
+<td>{{une_cotisation.montant_amande_total}}</td>
+<td>{{api.date_format_1(une_cotisation.created_at)}}</td>

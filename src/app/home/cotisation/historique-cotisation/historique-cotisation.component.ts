@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { ApiService } from 'src/app/service/api.service';
@@ -17,13 +17,24 @@ export class HistoriqueCotisationComponent implements OnInit {
     encaissees: "",
     non_encaissees: ""
   }
-  loading_add_membre = false
-  select_all:any={
-    encaissees:false,
-    non_encaissees:false
+  loading_add_cotisation = false
+  select_all: any = {
+    encaissees: false,
+    non_encaissees: false
   }
-  loading_cloture_periode=false
+  loading_cloture_periode = false
   bsModalRef?: BsModalRef;
+  current_page: any = {
+    encaissees: 1,
+    non_encaissees: 1
+  }
+
+  total_page = 100
+  @ViewChild("printer_button") printer_button!: ElementRef;
+  print: any = {
+    loading: false,
+    titre: "Gestion des cotisations "
+  }
   constructor(public api: ApiService, private http: HttpClient, private a_route: ActivatedRoute, private modalService: BsModalService) {
     a_route.params.subscribe((params: any) => {
       if (params["id_periode"]) {
@@ -47,6 +58,7 @@ export class HistoriqueCotisationComponent implements OnInit {
       //when success
       if (reponse.status) {
         this.api.les_cotisations = reponse.data
+        this.total_page = this.api.les_cotisations.encaissees.length
         console.log("Opération effectuée avec succés sur la table cotisation. Réponse= ", reponse);
       } else {
         console.log("L'opération sur la table cotisation a échoué. Réponse= ", reponse);
@@ -57,11 +69,11 @@ export class HistoriqueCotisationComponent implements OnInit {
         console.log("Erreur inconnue! ", error);
       })
   }
-  init_component(){
-    this.api.selected_membres=[]
-    this.select_all={
-      encaissees:false,
-      non_encaissees:false
+  init_component() {
+    this.api.selected_membres = []
+    this.select_all = {
+      encaissees: false,
+      non_encaissees: false
     }
   }
   periode_change(selected_id_periode: any) {
@@ -96,6 +108,7 @@ export class HistoriqueCotisationComponent implements OnInit {
     }
   }
   add_cotisation(cotisation: any) {
+    this.loading_add_cotisation = true
     //transformation des parametres à envoyer
     let formdata = new FormData()
     for (const key in cotisation) {
@@ -104,7 +117,7 @@ export class HistoriqueCotisationComponent implements OnInit {
 
     let api_url = this.api.taf_url + "cotisation/add_list"
     this.http.post(api_url, formdata).subscribe((reponse: any) => {
-      this.loading_add_membre = false;
+      this.loading_add_cotisation = false;
       //when success
       if (reponse.status) {
         console.log(reponse)
@@ -115,7 +128,7 @@ export class HistoriqueCotisationComponent implements OnInit {
       }
     },
       (error: any) => {
-        this.loading_add_membre = false;
+        this.loading_add_cotisation = false;
         //when error
         console.log("Erreur inconnue! ", error)
       })
@@ -128,6 +141,7 @@ export class HistoriqueCotisationComponent implements OnInit {
       var index = this.api.les_cotisations.non_encaissees.indexOf(un_membre)
       this.api.les_cotisations.non_encaissees.splice(index, 1)
     }
+    this.api.selected_membres = []
   }
   clique_une_cotisation(une_cotisation: any) {
     if (une_cotisation.checked) { // decocher
@@ -155,57 +169,80 @@ export class HistoriqueCotisationComponent implements OnInit {
       une_cotisation.montant = "10"
     }
   }
-  cloturer_cotisation(){
-    var params:any={
-      id_periode:this.id_periode,
-      id_membre:this.api.user_connected.id_membre,
-      id_tontine:this.api.user_connected.id_tontine,
-      mois_actuel:this.api.selected_periode.mois,
-      annee_actuelle:this.api.selected_periode.annee
+  cloturer_cotisation() {
+    var params: any = {
+      id_periode: this.id_periode,
+      id_membre: this.api.user_connected.id_membre,
+      id_tontine: this.api.user_connected.id_tontine,
+      mois_actuel: this.api.selected_periode.mois,
+      annee_actuelle: this.api.selected_periode.annee
     }
-    this.loading_cloture_periode=true;
+    this.loading_cloture_periode = true;
     //transformation des parametres à envoyer
     let formdata = new FormData()
     for (const key in params) {
       formdata.append(key, params[key])
     }
 
-    let api_url = this.api.taf_url+"periode/cloturer" 
+    let api_url = this.api.taf_url + "periode/cloturer"
     this.http.post(api_url, formdata).subscribe((reponse: any) => {
-      this.loading_cloture_periode=false;
+      this.loading_cloture_periode = false;
       //when success
-      if(reponse.status){
-        this.api.selected_periode.etat_periode=1
-        console.log("resultat cloture= ",reponse)
+      if (reponse.status) {
+        this.api.selected_periode.etat_periode = 1
+        console.log("resultat cloture= ", reponse)
         alert("Opération effectuée avec succés")
-      }else{
-        console.log("L'opération sur la table periode a échoué. Réponse = ",reponse)
+      } else {
+        console.log("L'opération sur la table periode a échoué. Réponse = ", reponse)
       }
     },
-    (error: any) => {
-      this.loading_cloture_periode=false;
-      //when error
-      console.log("Erreur inconnue! ", error)
-    })
+      (error: any) => {
+        this.loading_cloture_periode = false;
+        //when error
+        console.log("Erreur inconnue! ", error)
+      })
   }
-  select_all_encaissees(){
-    this.select_all.encaissees=!this.select_all.encaissees
+  select_all_encaissees() {
+    this.select_all.encaissees = !this.select_all.encaissees
   }
-  select_all_non_encaissees(){
-    this.select_all.non_encaissees=!this.select_all.non_encaissees
-    console.log(" èèèè= ",this.select_all.non_encaissees)
+  select_all_non_encaissees() {
+    this.select_all.non_encaissees = !this.select_all.non_encaissees
+    console.log(" èèèè= ", this.select_all.non_encaissees)
     // this.select_all.non_encaissees=!this.select_all.non_encaissees
     for (const un_membre of this.api.les_cotisations.non_encaissees) {
       this.clique_une_cotisation_2(un_membre)
-    } 
+    }
   }
-  openModalWithComponent(membre:any) {
+  openModalWithComponent(membre: any) {
     const initialState: ModalOptions = {
       initialState: {
-        membre:membre
+        membre: membre
       }
     };
     this.bsModalRef = this.modalService.show(DetailsMembreComponent, initialState);
-    // this.bsModalRef.content.closeBtnName = 'Close';
+  }
+  clique_print() {
+    this.print.loading = true
+    this.api.ligne_par_page.cotisation.encaissee = this.api.les_cotisations.encaissees.length
+    this.api.ligne_par_page.cotisation.non_encaissee = this.api.les_cotisations.non_encaissees.length
+    this.print.titre += " _ rapport des cotisations de la priode du " + this.api.selected_periode.mois + "-" + this.api.selected_periode.annee + " _ imprimé le " + moment().locale("fr").format('LLL');
+    setTimeout(() => {
+      this.printer_button.nativeElement.click();
+      setTimeout(() => {
+        this.print.loading = false
+        this.api.ligne_par_page.cotisation.encaissee = 5
+        this.api.ligne_par_page.cotisation.non_encaissee = 5
+      }, 1000);
+    }, 3000)
+  }
+  get_montant_total() {
+    var res = 0
+    if (this.api.les_cotisations?.encaissees?.length > 0) {
+      for (const une_cotisation of this.api.les_cotisations?.encaissees) {
+        res += parseFloat(une_cotisation.montant)
+      }
+    }
+
+    return res
   }
 }

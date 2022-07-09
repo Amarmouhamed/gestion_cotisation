@@ -1,0 +1,17 @@
+<div>
+    <h3 class="m-2"> {{les_periodes.length+" périodes"}} </h3>
+</div>
+<div class="list_wrapper">
+    <span (click)="go_left()" class="fleche gauche">&lt;</span>
+    <div class="liste_inline">
+        <div *ngFor="let une_periode of les_periodes"
+            class="bg-white rounded d-flex align-items-center justify-content-between p-4 m-2 clique une_periode">
+            <i class="fa fa-calendar fa-3x text-primary"></i>
+            <div class="ms-3">
+                <p class="mb-2">{{une_periode.mois}}</p>
+                <h6 class="mb-0">{{une_periode.annee}}</h6>
+            </div>
+        </div>
+    </div>
+    <span (click)="go_right()" class="fleche droite">&gt;</span>
+</div>

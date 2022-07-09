@@ -28,6 +28,14 @@
                         <div *ngIf="f.nom.errors.required"> nom est obligatoire </div>
                     </div>
                 </div>
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label>Email</label>
+                    <input class="form-control" type="email" formControlName="email" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                        <div *ngIf="f.email.errors.required"> email est obligatoire </div>
+                    </div>
+                </div>
                 <!-- adresse field avec un control de validite -->
                 <div class="form-group col-xs-12 col-sm-4">
                     <label>Adresse</label>
@@ -76,6 +84,26 @@
                          /> -->
                     <div *ngIf="submitted && f.id_etat.errors" class="invalid-feedback">
                         <div *ngIf="f.id_etat.errors.required"> etat est obligatoire </div>
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Privilège</label>
+                    <select formControlName="id_privilege" [ngClass]="{ 'is-invalid': submitted && f.id_privilege.errors }" class="form-select form-select-sm" >
+                        <option value="1">Standard</option>
+                        <option value="2">Administrateur de la tontine</option>
+                    </select>
+                    <!-- <input class="form-control" type="text" formControlName="etat" class="form-control"
+                         /> -->
+                    <div *ngIf="submitted && f.id_privilege.errors" class="invalid-feedback">
+                        <div *ngIf="f.id_privilege.errors.required"> Privilège est obligatoire </div>
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                    <label>Date d'adhesion</label>
+                    <input class="form-control" type="date" formControlName="date_adhesion" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.date_adhesion.errors }" />
+                    <div *ngIf="submitted && f.date_adhesion.errors" class="invalid-feedback">
+                        <div *ngIf="f.date_adhesion.errors.required"> date adhesion est obligatoire </div>
                     </div>
                 </div>
             </form>

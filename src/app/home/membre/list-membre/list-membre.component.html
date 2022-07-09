@@ -3,10 +3,10 @@
     <div class="bg-light text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h1 class="mb-0">
-                {{"Les membres de la tontine ("+api.les_membres.length+")"}}
+                {{"Membres ("+api.les_membres.length+")"}}
                 <i class="fa-solid fa-add me-2 text-primary clique" [routerLink]="['/accueil/membre/add']"></i>
             </h1>
-            <form class="d-none d-md-flex ms-4">
+            <form class="d-md-flex ms-4">
                 <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
                     [(ngModel)]="filter.membre">
             </form>
@@ -15,33 +15,25 @@
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
-                        <th scope="col"><input class="form-check-input" type="checkbox"></th>
                         <th scope="col">Matricule</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Montant total</th>
                         <th scope="col">Amande</th>
-                        <th scope="col">Poste</th>
+                        <th scope="col">Adhesion</th>
                         <th scope="col">Numéro</th>
-                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr [ngClass]="{'amande': un_membre.montant_amande_total}" *ngFor="let un_membre of api.les_membres  |filter:filter.membre">
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>{{un_membre.matricule}}</td>
-                        <td>{{un_membre.prenom}}</td>
-                        <td>{{un_membre.nom}}</td>
-                        <td>{{un_membre.montant_total}}</td>
-                        <td>{{un_membre.montant_amande_total}}</td>
-                        <td>{{un_membre.poste}}</td>
-                        <td>{{un_membre.numero}}</td>
-                        <td>
-                            <button (click)="openModalWithComponent(un_membre)" class="btn btn-primary">détails</button> 
-                        </td>
+                    <tr app-item-membre *ngFor="let un_membre of api.les_membres  | filter:filter.membre | slice: (current_page.membre-1) * api.items_par_page : current_page.membre * api.items_par_page" [un_membre]="un_membre">
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-12" >
+                <pagination [itemsPerPage]="api.items_par_page" [totalItems]="(api.les_membres | filter:filter.membre)?.length" [(ngModel)]="current_page.membre"></pagination>
+            </div>
         </div>
     </div>
 </div>

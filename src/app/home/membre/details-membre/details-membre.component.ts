@@ -16,6 +16,10 @@ export class DetailsMembreComponent implements OnInit {
   les_cotisations_membre: any = []
   loading_get_cotisation = false
   loading_edit_amande = false
+  filter:any={
+    amande:"",
+    cotisation:""
+  }
   constructor(public bsModalRef: BsModalRef, private http: HttpClient, public api: ApiService) { }
 
   ngOnInit() {
@@ -39,38 +43,6 @@ export class DetailsMembreComponent implements OnInit {
         this.loading_get_amande = false
         //when error
         console.log("Erreur inconnue! ", error);
-      })
-  }
-  amander() {
-    this.add_amande({
-      id_tontine: this.membre.id_tontine,
-      id_membre: this.membre.id_membre,
-      id_type_amande: 2,// id de peerturbation
-    })
-  }
-  add_amande(amande: any) {
-    this.loading_add_amande = true;
-    //transformation des parametres à envoyer
-    let formdata = new FormData()
-    for (const key in amande) {
-      formdata.append(key, amande[key])
-    }
-
-    let api_url = this.api.taf_url + "amande/add"
-    this.http.post(api_url, formdata).subscribe((reponse: any) => {
-      this.loading_add_amande = false;
-      //when success
-      if (reponse.status) {
-        this.membre.montant_amande_total += 5
-        console.log("Opération effectuée avec succés sur la table amande. Réponse = ", reponse)
-      } else {
-        console.log("L'opération sur la table amande a échoué. Réponse = ", reponse)
-      }
-    },
-      (error: any) => {
-        this.loading_add_amande = false;
-        //when error
-        console.log("Erreur inconnue! ", error)
       })
   }
 
@@ -97,14 +69,14 @@ export class DetailsMembreComponent implements OnInit {
     this.edit_amande({
       id_amande:amande.id_amande,
       etat_amande:1
-    })
+    },amande)
   }
-  edit_amande(amande: any) {
+  edit_amande(params:any,amande: any) {
     amande.loading=true
     //transformation des parametres à envoyer
     let formdata = new FormData()
-    for (const key in amande) {
-      formdata.append(key, amande[key])
+    for (const key in params) {
+      formdata.append(key, params[key])
     }
 
     let api_url = this.api.taf_url+"amande/payer_amande"
@@ -112,7 +84,9 @@ export class DetailsMembreComponent implements OnInit {
       amande.loading = false
       //when success
       if (reponse.status) {
-        this.membre.montant_amande_total-=amande.montant
+        // var a=Object.assign({},amande)
+        console.log("montant_amande_total =" ,this.membre.montant_amande_total," ",amande.montant)
+        this.membre.montant_amande_total=parseFloat(this.membre.montant_amande_total)- parseFloat(amande.montant)
         this.les_amandes_membre.splice(this.les_amandes_membre.indexOf(amande),1)
         console.log("Opération effectuée avec succés sur la table amande. Réponse = ", reponse)
       } else {

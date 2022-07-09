@@ -1,10 +1,24 @@
-<div class="container-fluid pt-4 px-4" id="print-section">
+<div class="container-fluid pt-4 px-4"  id="print-section">
     <div class="bg-light text-center rounded p-4">
+        <div>
+            <div class="d-flex align-items-center justify-content-between">
+                <h2>{{"Amandes "+api.selected_periode_amande.mois+"-"+api.selected_periode_amande.annee}}</h2>
+                <button [disabled]="print.loading" (click)="clique_print()" type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>{{print.loading?"en cours":"Télécharger rapport"}}</button>
+
+                <button #printer_button style="display: none;" styleSheetFile="assets/css/custom1.css" [useExistingCss]="true" [printTitle]="print.titre" printSectionId="print-section" ngxPrint type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>Télécharger rapport hided</button>
+            </div>
+            <p>
+                <strong>{{api.user_connected.tontine.nom}}</strong>
+                {{" - Date de début :"+api.date_format_1(api.user_connected.tontine.date_debut)}}
+            </p>
+            <h3>Montant total : {{get_montant_total()}}</h3>
+        </div>
+        <app-inline-periode-amande class="hide_print" [selected_id_periode]="id_periode" (periode_change)="periode_change($event)"></app-inline-periode-amande>
         <div class="d-flex align-items-center justify-content-between mb-2">
-            <h3 class="mb-0 ">{{"Amandes Encaissées ("+api.les_amandes.encaissees?.length+" / "+(api.les_amandes.encaissees?.length+api.les_amandes.non_encaissees?.length)+")"}}
+            <h3 class="mb-0 text-success">{{"Amandes Encaissées ("+api.les_amandes.encaissees?.length+" / "+(api.les_amandes.encaissees?.length+api.les_amandes.non_encaissees?.length)+")"}}
                 
             </h3>
-            <form class="d-none d-md-flex ms-4">
+            <form class="d-md-flex ms-4 hide_print">
                 <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
                     [(ngModel)]="filter.encaissees">
             </form>
@@ -13,73 +27,106 @@
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
-                        <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                        <th scope="col" class="show_print">N°</th>
                         <th scope="col">Amande</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Matricule</th>
                         <th scope="col">Prenom</th>
                         <th scope="col">Nom</th>
-                        <th scope="col">Date limite</th>
-                        <th scope="col" class="hide_print">Action</th>
+                        <th scope="col">Date paiement</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clique"  *ngFor="let une_cotisation of api.les_amandes.encaissees| filter:filter.encaissees">
-                        <td><input [checked]="une_cotisation.checked" class="form-check-input" type="checkbox"></td>
-                        <td>{{une_cotisation.titre}}</td>
-                        <td>{{une_cotisation.montant}}</td>
-                        <td>{{une_cotisation.matricule}}</td>
-                        <td>{{une_cotisation.prenom}}</td>
-                        <td>{{une_cotisation.nom}}</td>
-                        <td>{{une_cotisation.date_limite}}</td>
-                        <td class="hide_print">
-                            <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-primary">détails</button> 
-                        </td>
+                    <tr app-item-amande-encaissee [une_amande]="une_amande" class="clique"  *ngFor="let une_amande of api.les_amandes.encaissees | filter:filter.encaissees | slice: (current_page.encaissees-1) * api.ligne_par_page.amande.encaissee: current_page.encaissees * api.ligne_par_page.amande.encaissee; let index=index" [index]="index">
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="row hide_print">
+            <div class="col-xs-12 col-12" >
+                <pagination [itemsPerPage]="api.ligne_par_page.amande.encaissee" [totalItems]="(api.les_amandes?.encaissees | filter:filter.encaissees )?.length" [(ngModel)]="current_page.encaissees"></pagination>
+            </div>
         </div>
         <br>
         <hr>
         <br>
         <div class="d-flex align-items-center justify-content-between mb-2">
-            <h3 class="mb-0 text-warning">{{"Amandes non encaissées ("+api.les_amandes.non_encaissees?.length+" / "+(api.les_amandes.encaissees?.length+api.les_amandes.non_encaissees?.length)+")"}}
+            <h3 class="mb-0 text-secondary">{{"Amandes non encaissées ("+api.les_amandes.non_encaissees?.length+" / "+(api.les_amandes.encaissees?.length+api.les_amandes.non_encaissees?.length)+")"}}
                 
             </h3>
-            <form class="d-none d-md-flex ms-4">
-                <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
-                    [(ngModel)]="filter.non_encaissees">
-            </form>
+            <div class="d-md-flex ms-4 hide_print">
+                <button (click)="payer_many_amande()" class="btn btn-primary"  [disabled]="selected_amandes.length==0 || loading_payer_amande">{{loading_payer_amande?"En cours ...":"Payer ("+selected_amandes.length+")"}}</button>
+                <button (click)="annuler_many_amande()" class="btn btn-outline-secondary"  [disabled]="selected_amandes.length==0 || loading_payer_amande">{{loading_annuler_amande?"En cours ...":"Annuler ("+selected_amandes.length+")"}}</button>
+                <form>
+                    <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
+                        [(ngModel)]="filter.non_encaissees">
+                </form>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
-                        <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                        <th class="hide_print" scope="col"><input  (change)="select_all_amande()" [checked]="all_amande_selected" class="form-check-input" type="checkbox"></th>
+                        <th scope="col" class="show_print">N°</th>
                         <th scope="col">Amande</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Matricule</th>
                         <th scope="col">Prenom</th>
                         <th scope="col">Nom</th>
+                        <th scope="col">Date amande</th>
                         <th scope="col">Date limite</th>
-                        <th scope="col" class="hide_print">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clique"  *ngFor="let une_cotisation of api.les_amandes.non_encaissees| filter:filter.non_encaissees">
-                        <td><input [checked]="une_cotisation.checked" class="form-check-input" type="checkbox"></td>
-                        <td>{{une_cotisation.titre}}</td>
-                        <td>{{une_cotisation.montant}}</td>
-                        <td>{{une_cotisation.matricule}}</td>
-                        <td>{{une_cotisation.prenom}}</td>
-                        <td>{{une_cotisation.nom}}</td>
-                        <td>{{une_cotisation.date_limite}}</td>
-                        <td class="hide_print">
-                            <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-primary">détails</button> 
-                        </td>
+                    <tr app-item-amande-non-encaissee [une_amande]="une_amande" class="clique" (click)="clique_une_amande(une_amande)" *ngFor="let une_amande of api.les_amandes?.non_encaissees| filter:filter.non_encaissees | slice: (current_page.non_encaissees-1) * api.ligne_par_page.amande.non_encaissee : current_page.non_encaissees * api.ligne_par_page.amande.non_encaissee; let index=index" [index]="index">
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="row hide_print">
+            <div class="col-xs-12 col-12" >
+                <pagination [itemsPerPage]="api.ligne_par_page.amande.non_encaissee" [totalItems]="(api.les_amandes.non_encaissees | filter:filter.non_encaissees )?.length" [(ngModel)]="current_page.non_encaissees"></pagination>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="mb-0 hide_print">
+                {{"Les membres ("+les_membres_amande.length+")"}}
+                <i class="fa-solid fa-add me-2 text-primary clique" [routerLink]="['/accueil/membre/add']"></i>
+            </h1>
+            <div class="d-flex ms-4 hide_print">
+                <button (click)="appliquer_amande()" class="btn btn-primary hide_print"  [disabled]="selected_membres.length==0 || loading_add_amande">{{loading_add_amande?"En cours ...":"Appliquer amandes ("+selected_membres.length+")"}}</button>
+                <form>
+                <input name="terme_recherche" class="form-control border-0 hide_print" type="search" placeholder="rechercher"
+                    [(ngModel)]="filter.membre">
+            </form>
+            </div>
+        </div>
+        <div class="table-responsive hide_print">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col"><input  (change)="select_all_membre()" [checked]="all_membre_selected"  class="form-check-input" type="checkbox"></th>
+                        <th scope="col">Matricule</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Montant total</th>
+                        <th scope="col">Amande</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr app-item-membre-amande [un_membre]="un_membre" [selected_membres]="selected_membres"  *ngFor="let un_membre of les_membres_amande | filter:filter.membre | slice: (current_page.membre_amande-1) * api.items_par_page : current_page.membre_amande * api.items_par_page">
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row hide_print">
+            <div class="col-xs-12 col-12" >
+                <pagination [itemsPerPage]="api.items_par_page" [totalItems]="(les_membres_amande | filter:filter.membre )?.length" [(ngModel)]="current_page.membre_amande"></pagination>
+            </div>
         </div>
     </div>
 </div>

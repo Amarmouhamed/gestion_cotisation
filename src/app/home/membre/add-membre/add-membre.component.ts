@@ -19,14 +19,16 @@ export class AddMembreComponent implements OnInit {
   }
   init_form() {
     this.reactiveForm_add_membre = this.formBuilder.group({
-
       prenom: ["", Validators.required],
       nom: ["", Validators.required],
+      email: ["", Validators.required],
       adresse: ["", Validators.required],
       poste: [""],
-      numero: ["", Validators.required],
-      matricule: ["", Validators.required],
+      numero: [""],
+      matricule: [""],
       id_etat: ["", Validators.required],
+      id_privilege:  ["", Validators.required],
+      date_adhesion:  ["", Validators.required],
     });
   }
 

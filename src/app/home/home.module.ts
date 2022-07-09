@@ -31,6 +31,17 @@ import { ParametreAmandeComponent } from './parametre/parametre-amande/parametre
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { InlinePeriodeAmandeComponent } from './amande/inline-periode-amande/inline-periode-amande.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ItemCotisationEncaisseeComponent } from './cotisation/item-cotisation-encaissee/item-cotisation-encaissee.component';
+import { ItemCotisationNonEncaisseeComponent } from './cotisation/item-cotisation-non-encaissee/item-cotisation-non-encaissee.component';
+import { ItemMembreComponent } from './membre/item-membre/item-membre.component';
+import { ItemMembreAmandeComponent } from './amande/item-membre-amande/item-membre-amande.component';
+import { ItemAmandeNonEncaisseeComponent } from './amande/item-amande-non-encaissee/item-amande-non-encaissee.component';
+import { ItemAmandeEncaisseeComponent } from './amande/item-amande-encaissee/item-amande-encaissee.component';
+import { ParametrePeriodeComponent } from './parametre/parametre-periode/parametre-periode.component';
+import { AddPeriodeComponent } from './periode/add-periode/add-periode.component';
+import { InlinePeriodePreviewComponent } from './periode/inline-periode-preview/inline-periode-preview.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +67,17 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
     InlineSelectedMembreComponent,
     ListAmandeComponent,
     ListRealisationComponent,
-    ParametreAmandeComponent
+    ParametreAmandeComponent,
+    InlinePeriodeAmandeComponent,
+    ItemCotisationEncaisseeComponent,
+    ItemCotisationNonEncaisseeComponent,
+    ItemMembreComponent,
+    ItemMembreAmandeComponent,
+    ItemAmandeNonEncaisseeComponent,
+    ItemAmandeEncaisseeComponent,
+    ParametrePeriodeComponent,
+    AddPeriodeComponent,
+    InlinePeriodePreviewComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +87,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
     Ng2SearchPipeModule,
     Ng2GoogleChartsModule,
     NgxPrintModule,
-    ProgressbarModule
+    ProgressbarModule,
+    PaginationModule
   ]
 })
 export class HomeModule { }

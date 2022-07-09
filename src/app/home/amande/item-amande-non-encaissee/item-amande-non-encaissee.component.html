@@ -1,0 +1,13 @@
+<td class="hide_print"><input [checked]="une_amande.checked" class="form-check-input" type="checkbox"></td>
+<td class="show_print">{{index+1}}</td>
+<td>{{une_amande.titre}}</td>
+<td>{{une_amande.montant}}</td>
+<td>{{une_amande.matricule}}</td>
+<td (click)="openModalWithComponent(une_amande)">
+    <button type="button" class="btn btn-link rounded-pill">{{une_amande.prenom}}</button>
+</td>
+<td (click)="openModalWithComponent(une_amande)">
+    <button type="button" class="btn btn-link rounded-pill">{{une_amande.nom}}</button>
+</td>
+<td>{{api.date_format_1(une_amande.date_amande)}}</td>
+<td>{{api.date_format_1(une_amande.date_limite)}}</td>

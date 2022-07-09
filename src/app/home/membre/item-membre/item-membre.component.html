@@ -1,0 +1,11 @@
+<td>{{un_membre.matricule}}</td>
+<td (click)="openModalWithComponent(un_membre)">
+    <button type="button" class="btn btn-link rounded-pill">{{un_membre.prenom}}</button>
+</td>
+<td (click)="openModalWithComponent(un_membre)">
+    <button type="button" class="btn btn-link rounded-pill">{{un_membre.nom}}</button>
+</td>
+<td>{{un_membre.montant_total}}</td>
+<td>{{un_membre.montant_amande_total}}</td>
+<td>{{api.il_ya(un_membre.date_adhesion)}}</td>
+<td>{{un_membre.numero}}</td>

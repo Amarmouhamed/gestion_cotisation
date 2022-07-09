@@ -1,0 +1,17 @@
+<td (click)="clique_un_membre(un_membre)"><input [checked]="un_membre.checked" class="form-check-input" type="checkbox">
+</td>
+<td>{{un_membre.matricule}}</td>
+<td (click)="openModalWithComponent(un_membre)">
+    <button type="button" class="btn btn-link rounded-pill">{{un_membre.prenom}}</button>
+</td>
+<td (click)="openModalWithComponent(un_membre)">
+    <button type="button" class="btn btn-link rounded-pill">{{un_membre.nom}}</button>
+</td>
+<td>{{un_membre.montant_total}}</td>
+<td class="hide_print">
+    <select [(ngModel)]="un_membre.id_type_amande" class="form-select form-select-sm">
+        <option value="undefined">Choisir le type d'amande</option>
+        <option value="2">Perturbation</option>
+        <option value="4">Absence</option>
+    </select>
+</td>

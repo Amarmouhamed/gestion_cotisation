@@ -30,6 +30,7 @@ export class InlinePeriodeComponent implements OnInit {
         } else {
           this.periode_change.emit(this.selected_id_periode)
           this.api.selected_periode = this.get_selected_periode_by_id(this.selected_id_periode)
+          this.scroll_to_selected_periode(this.api.selected_periode)
         }
         console.log("Opération effectuée avec succés sur la table periode. Réponse= ", reponse);
       } else {
@@ -57,19 +58,36 @@ export class InlinePeriodeComponent implements OnInit {
         this.selected_id_periode = une_periode.id_periode
         this.api.selected_periode = une_periode
         this.periode_change.emit(this.selected_id_periode)
+        this.scroll_to_selected_periode(une_periode)
         return
       }
     }
+    // on selectionne la dernière periode
+    var p = this.api.les_periodes[this.api.les_periodes.length - 1]
+    this.selected_id_periode = p.id_periode
+    this.api.selected_periode = p
+    this.periode_change.emit(this.selected_id_periode)
+    this.scroll_to_selected_periode(p)
   }
   select_periode(une_periode: any) {
     this.api.selected_periode = une_periode
     this.periode_change.emit(une_periode.id_periode)
   }
-  get_selected_periode_by_id(selected_id_periode:number) {
+  get_selected_periode_by_id(selected_id_periode: number) {
     for (const une_periode of this.api.les_periodes) {
       if (selected_id_periode == une_periode.id_periode) {
         return une_periode
       }
     }
+  }
+  scroll_to_selected_periode(une_periode: any) {
+    setTimeout(() => {
+      var index = this.api.les_periodes.indexOf(une_periode)
+      var deplacement = index * 142.81
+      console.log("deplacement= ", deplacement)
+
+      var liste = document.getElementsByClassName("liste_inline")[0];
+      liste.scrollLeft = deplacement;
+    }, 500);
   }
 }

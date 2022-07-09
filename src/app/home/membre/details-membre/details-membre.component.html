@@ -1,75 +1,85 @@
 <div class="modal-header">
-    <h4 class="modal-title pull-left">{{membre.prenom+" "+membre.nom}}</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
-    </button>
+  <h4 class="modal-title pull-left">{{membre.prenom+" "+membre.nom}}</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
 </div>
-<div class="modal-body">
-    <ul class="list-group">
-        <li class="list-group-item"><span class="label">Matricule </span>: <span
-                class="value">{{membre.matricule}}</span> </li>
-        <li class="list-group-item"><span class="label">Monant total </span>: <span
-                class="value">{{membre.montant}}</span> </li>
-        <li class="list-group-item"> <span class="label">Amande totale</span>: <span
-                class="value">{{membre.montant_amande_total|| "pas d'amande"}}</span> </li>
-    </ul>
-    <div class="actions mt-4">
-        <button [disabled]="loading_add_amande" type="button" class="btn btn-warning"
-            (click)="amander()">{{loading_add_amande?"En cours ...":"Appliquer une amande de perturbation"}}</button>
+<div class="modal-body ">
+  <ul class="list-group">
+    <li class="list-group-item"><span class="label">Email </span>: <span class="value">{{membre.email || "non renseigné"}}</span></li>
+    <li class="list-group-item"><span class="label">Adhesion </span>: <span class="value">{{api.date_format_1(membre.date_adhesion)+ ' - '+api.il_ya(membre.date_adhesion)}}</span></li>
+    <li class="list-group-item"><span class="label">Matricule </span>: <span class="value">{{membre.matricule}}</span></li>
+    <li class="list-group-item"><span class="label">Monant total </span>: <span class="value">{{membre.montant_total || "pas de cotisation"}}</span> </li>
+    <li class="list-group-item"> <span class="label">Amande totale</span>: <span
+        class="value">{{membre.montant_amande_total|| "pas d'amande"}}</span> </li>
+  </ul>
+  <div class="les_amandes mt-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <h3>{{les_amandes_membre.length==0?"Pas d'amandes":"Amandes"}}</h3>
+      <form class="d-md-flex ms-4">
+          <input name="terme_recherche" class="form-control" type="search" placeholder="rechercher"
+              [(ngModel)]="filter.amande">
+      </form>
     </div>
-    <div class="les_amandes">
-        <h3>{{les_amandes_membre.length==0?"Pas d'amandes":"Amandes"}}</h3>
 
-        <div class="mb-2" *ngIf="loading_get_amande">
-            <progressbar [max]="100" [value]="56" type="danger" [striped]="true" [animate]="true"><i>56/100</i></progressbar>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Montant</th>
-                <th scope="col">Date d'amande</th>
-                <th scope="col">Echéance</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let une_amande of les_amandes_membre; let index=index">
-                <th scope="row">{{index+1}}</th>
-                <td>{{une_amande.montant}}</td>
-                <td>{{une_amande.date_amande}}</td>
-                <td>{{une_amande.date_limite}}</td>
-                <td> <button class="btn btn-primary" (click)="payer_amande(une_amande)">{{une_amande.loading?"En cours ...":"payer"}}</button> </td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="mb-2" *ngIf="loading_get_amande">
+      <progressbar [max]="100" [value]="56" type="danger" [striped]="true" [animate]="true"><i>56/100</i></progressbar>
     </div>
-    <div class="les_cotisations mt-4">
-        <h3>{{les_cotisations_membre.length==0?"Pas de cotisation":"Cotisations"}}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Amande</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Période</th>
+          <th scope="col">Date</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let une_amande of les_amandes_membre | filter: filter.amande; let index=index">
+          <th scope="row">{{index+1}}</th>
+          <td>{{une_amande.titre}}</td>
+          <td>{{une_amande.montant}}</td>
+          <td>{{une_amande.mois+"-"+une_amande.annee}}</td>
+          <td>{{api.date_format_2(une_amande.date_amande)}}</td>
+          <td> <button class="btn btn-primary" (click)="payer_amande(une_amande)">{{une_amande.loading?"En cours...":"payer"}}</button> </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="les_cotisations mt-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <h3>{{les_cotisations_membre.length==0?"Pas de cotisation":"Cotisations"}}</h3>
+      <form class="d-md-flex ms-4">
+          <input name="terme_recherche" class="form-control" type="search" placeholder="rechercher"
+              [(ngModel)]="filter.cotisation">
+      </form>
+    </div>
 
-        <div class="mb-2" *ngIf="loading_get_cotisation">
-            <progressbar [max]="100" [value]="56" type="danger" [striped]="true" [animate]="true"><i>56/100</i></progressbar>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Montant</th>
-                <th scope="col">Période</th>
-                <th scope="col">Date cotisationn</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let une_cotisation of les_cotisations_membre; let index=index">
-                <th scope="row">{{index+1}}</th>
-                <td>{{une_cotisation.montant}}</td>
-                <td>{{une_cotisation.mois+ " / "+une_cotisation.annee}}</td>
-                <td>{{une_cotisation.date_cotisation}}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="mb-2" *ngIf="loading_get_cotisation">
+      <progressbar [max]="100" [value]="56" type="danger" [striped]="true" [animate]="true"><i>56/100</i></progressbar>
     </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Période</th>
+          <th scope="col">Date cotisationn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let une_cotisation of les_cotisations_membre | filter:filter.cotisation; let index=index">
+          <th scope="row">{{index+1}}</th>
+          <td>{{une_cotisation.montant}}</td>
+          <td>{{une_cotisation.mois+ " / "+une_cotisation.annee}}</td>
+          <td>{{api.date_format_2(une_cotisation.date_cotisation)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Fermer</button>
+  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Fermer</button>
 </div>

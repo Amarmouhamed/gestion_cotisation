@@ -1,20 +1,27 @@
 
 <div class="container-fluid pt-4 px-4" id="print-section">
     <div class="bg-light text-center rounded p-4">
-        <div class="show_print">
-            <h2>{{"Tontine :"+api.user_connected.tontine.nom}}</h2>
-            <p>{{"Date de début :"+api.user_connected.tontine.date_debut}}</p>
-            <p>{{"Membres :"+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)}}</p>
-            <p>{{"Mois : "+api.selected_periode.mois+"-"+api.selected_periode.annee}}</p>
-            <button styleSheetFile="assets/css/custom1.css" [useExistingCss]="true" printTitle="Gestion des cotisations" printSectionId="print-section" ngxPrint type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>Télécharger rapport</button>
+        <div>
+            <div class="d-flex align-items-center justify-content-between">
+                <h2>{{"Cotisation du "+api.selected_periode.mois+"-"+api.selected_periode.annee}}</h2>
+                <button [disabled]="print.loading" (click)="clique_print()" type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>{{print.loading?"en cours":"Télécharger rapport"}}</button>
+
+                <button #printer_button style="display: none;" styleSheetFile="assets/css/custom1.css" [useExistingCss]="true" [printTitle]="print.titre" printSectionId="print-section" ngxPrint type="button" class="btn btn-outline-primary m-2 hide_print"><i class="fa fa-download me-2"></i>Télécharger rapport hided</button>
+            </div>
+            <p>
+               <strong>{{api.user_connected.tontine.nom}}</strong> 
+                {{" - Date de début :"+api.date_format_1(api.user_connected.tontine.date_debut)}}
+                {{" - Membres :"+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)}}
+            </p>
+            <h3>Montant total : {{get_montant_total()}}</h3>
         </div>
         <app-inline-periode class="hide_print" [selected_id_periode]="id_periode" (periode_change)="periode_change($event)">
         </app-inline-periode>
         <div class="d-flex align-items-center justify-content-between mb-2">
-            <h3 class="mb-0 ">{{"Encaissées ("+api.les_cotisations.encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}}
+            <h3 class="mb-0 text-success">{{"Encaissées ("+api.les_cotisations.encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}}
                 
             </h3>
-            <div class="d-md-flex ms-4">
+            <div class="d-md-flex ms-4 hide_print">
                 <button (click)="cloturer_cotisation()" class="btn btn-primary" [disabled]="loading_cloture_periode || api.selected_periode.etat_periode==1">{{loading_cloture_periode?"En cours ...":"Cloturer les cotisations"}}</button>
                 <form>
                     <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
@@ -26,83 +33,63 @@
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
-                        <th scope="col"><input (change)="select_all_encaissees()" [checked]="select_all.encaissees" class="form-check-input" type="checkbox"></th>
+                        <th scope="col" class="show_print">N°</th>
                         <th scope="col">Matricule</th>
                         <th scope="col">Prenom</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Amande</th>
                         <th scope="col">Date</th>
-                        <th scope="col" class="hide_print">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr [ngClass]="{'amande': une_cotisation.montant_amande_total>0}" class="clique"  *ngFor="let une_cotisation of api.les_cotisations.encaissees| filter:filter.encaissees">
-                        <td><input [checked]="une_cotisation.checked" class="form-check-input" type="checkbox"></td>
-                        <td>{{une_cotisation.matricule}}</td>
-                        <td>{{une_cotisation.prenom}}</td>
-                        <td>{{une_cotisation.nom}}</td>
-                        <td>{{une_cotisation.montant}}</td>
-                        <td>{{une_cotisation.montant_amande_total}}</td>
-                        <td>{{une_cotisation.created_at}}</td>
-                        <td class="hide_print">
-                           <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-primary">détails</button> 
-                        </td>
+                    <tr app-item-cotisation-encaissee class="clique"  *ngFor="let une_cotisation of api.les_cotisations.encaissees | filter:filter.encaissees | slice: (current_page.encaissees-1) * api.ligne_par_page.cotisation.encaissee : current_page.encaissees * api.ligne_par_page.cotisation.encaissee; let index=index" [une_cotisation]="une_cotisation" [index]="index">
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div class="row hide_print">
+            <div class="col-xs-12 col-12" >
+                <pagination [(ngModel)]="current_page.encaissees" [itemsPerPage]="api.ligne_par_page.cotisation.encaissee" [totalItems]="(api.les_cotisations?.encaissees | filter:filter.encaissees)?.length"></pagination>
+            </div>
+        </div>
         <hr>
         <div class="d-flex align-items-center justify-content-between mt-4 mb-2">
-            <h3 class="mb-0 text-warning">{{"Non encaissées  ("+api.les_cotisations.non_encaissees?.length+" / "+(api.les_cotisations.encaissees?.length+api.les_cotisations.non_encaissees?.length)+")"}} </h3>
-            <div class="d-md-flex ms-4">
-                <button [disabled]="loading_add_membre" (click)="enregistrer_cotisation()" class="btn btn-sm btn-primary m-1" [disabled]="api.selected_membres.length==0">
-                    {{loading_add_membre?"En cours":"Enregistrer ("+api.selected_membres.length+") "}}
+            <h3 class="mb-0 text-secondary">{{"Non encaissées  ("+api.les_cotisations?.non_encaissees?.length+" / "+(api.les_cotisations?.encaissees?.length+api.les_cotisations?.non_encaissees?.length)+")"}} </h3>
+            <div class="d-md-flex ms-4 hide_print">
+                <button (click)="enregistrer_cotisation()" class="btn btn-sm btn-primary m-1" [disabled]="api.selected_membres.length==0 || loading_add_cotisation">
+                    {{loading_add_cotisation?"En cours ...":"Enregistrer ("+api.selected_membres.length+") "}}
                 </button>
-            <form>
-                <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
-                    [(ngModel)]="filter.non_encaissees">
-            </form>
+                <form>
+                    <input name="terme_recherche" class="form-control border-0" type="search" placeholder="rechercher"
+                        [(ngModel)]="filter.non_encaissees">
+                </form>
             </div>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-dark">
-                        <th scope="col"><input (change)="select_all_non_encaissees()" [checked]="select_all.non_encaissees" class="form-check-input" type="checkbox"></th>
-                        <th scope="col">Matricule</th>
+                        <th class="hide_print" scope="col"><input (change)="select_all_non_encaissees()" [checked]="select_all.non_encaissees" class="form-check-input" type="checkbox"></th>
+                        <th scope="col" class="show_print">N°</th>
+                        <th scope="col">Matricule</th>                     
                         <th scope="col">Prenom</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Amande</th>
                         <th scope="col" class="hide_print">Montant</th>
                         <th scope="col" class="hide_print">Date</th>
-                        <th scope="col" class="hide_print">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clique" [ngClass]="{'line_changed': une_cotisation.checked, 'amande': une_cotisation.montant_amande_total>0}" *ngFor="let une_cotisation of api.les_cotisations.non_encaissees | filter:filter.non_encaissees">
-                        <td (click)="clique_une_cotisation_2(une_cotisation)"><input [checked]="une_cotisation.checked" class="form-check-input" type="checkbox"></td>
-                        <td>{{une_cotisation.matricule}}</td>
-                        <td>{{une_cotisation.prenom}}</td>
-                        <td>{{une_cotisation.nom}}</td>
-                        <td>{{une_cotisation.montant_amande_total}}</td>
-                        <td class="hide_print">
-                            <select [(ngModel)]="une_cotisation.montant" class="form-select form-select-sm" (change)="changement_select_montant(une_cotisation)">
-                                <option value="undefined">Choisir le montant</option>
-                                <option value="10">10 Euros</option>
-                                <option value="20">20 Euros</option>
-                                <option value="30">30 Euros</option>
-                            </select>
-                        </td>
-                        <td class="hide_print">
-                            <input [(ngModel)]="une_cotisation.date_cotisation" type="date" class="form-control" placeholder="date" (change)="changement_date(une_cotisation)">
-                        </td>
-                        <td class="hide_print">
-                           <button (click)="openModalWithComponent(une_cotisation)" class="btn btn-primary">détails</button> 
-                        </td>
+                    <tr app-item-cotisation-non-encaissee class="clique" *ngFor="let une_cotisation of api.les_cotisations.non_encaissees | filter:filter.non_encaissees | slice: (current_page.non_encaissees-1) * api.ligne_par_page.cotisation.non_encaissee : current_page.non_encaissees * api.ligne_par_page.cotisation.non_encaissee; let index=index" [une_cotisation]="une_cotisation" [index]="index">
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="row hide_print">
+            <div class="col-xs-12 col-12" >
+                <pagination [itemsPerPage]="api.ligne_par_page.cotisation.non_encaissee" [totalItems]="(api.les_cotisations?.non_encaissees | filter:filter.non_encaissees)?.length" [(ngModel)]="current_page.non_encaissees"></pagination>
+            </div>
         </div>
     </div>
 </div>

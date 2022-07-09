@@ -12,6 +12,9 @@ import { DetailsMembreComponent } from '../details-membre/details-membre.compone
 export class ListMembreComponent implements OnInit {
   filter:any={membre:""}
   bsModalRef?: BsModalRef;
+  current_page:any={
+    membre:1
+  }
   constructor(public api:ApiService, private http:HttpClient,private modalService: BsModalService) { }
 
   ngOnInit(): void {

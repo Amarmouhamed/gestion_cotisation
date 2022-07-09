@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="row h-100 align-items-center justify-content-center" style="min-height: 70vh;">
+        <div class="col-12 col-sm-8">
+            <form class="bg-light rounded p-4 p-sm-5 my-4 mx-3" [formGroup]="reactiveForm_add_periode"
+                (ngSubmit)="onSubmit_add_periode()" #form_add_periode="ngForm">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3>Générer les périodes</h3>
+                </div>
+                <div class="form-floating mb-3">
+                    <input (change)="changement()" class="form-control" type="date" formControlName="date_debut" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.date_debut.errors }" />
+                    <label>Date de début de la tontine</label>
+                    <div *ngIf="submitted && f.date_debut.errors" class="invalid-feedback">
+                        <div *ngIf="f.date_debut.errors.required"> La date de début est obligatoire </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-4">
+                    <input  min="1" (change)="changement()" class="form-control" type="number" formControlName="nombre_periode" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.nombre_periode.errors }" />
+                    <label>Nombre de périodes</label>
+                    <div *ngIf="submitted && f.nombre_periode.errors" class="invalid-feedback">
+                        <div *ngIf="f.nombre_periode.errors.required"> le nombre de période est obligatoire </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="m-2"> {{les_periodes.length+" périodes"}} </h3>
+                </div>
+                <div class="list_wrapper">
+                    <span (click)="go_left()" class="fleche gauche">&lt;</span>
+                    <div class="liste_inline">
+                        <div *ngFor="let une_periode of les_periodes"
+                            class="bg-white rounded d-flex align-items-center justify-content-between p-4 m-2 clique une_periode">
+                            <i class="fa fa-calendar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">{{une_periode.mois}}</p>
+                                <h6 class="mb-0">{{une_periode.annee}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <span (click)="go_right()" class="fleche droite">&gt;</span>
+                </div>
+                <button type="submit" class="btn btn-primary py-3 w-100 mb-4" [disabled]="loading_add_periode">{{loading_add_periode?"En cours ...":"Enregistrer"}}</button>
+            </form>
+        </div>
+    </div>
+</div>
