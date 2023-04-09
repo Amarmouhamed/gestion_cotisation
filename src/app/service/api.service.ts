@@ -15,8 +15,8 @@ export class ApiService {
   les_amandes:any=[]
   les_type_amandes:any=[]
   selected_periode_amande:any={}
-  taf_url="http://localhost/gestion_cotisation_back/taf/"
-  // taf_url="https://amar.host.com.sn/taf/"
+  // taf_url="http://localhost/gestion_cotisation_back/taf/"
+  taf_url="https://cotisation.jant.tech/taf/"
   terme_recherche=""
   key_prefix_localtrorage = "abcde_gestion_cgek_cotisation"
   user_connected:any={}
